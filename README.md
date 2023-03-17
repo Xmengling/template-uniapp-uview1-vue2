@@ -1,5 +1,5 @@
 # 一个开箱即用的小程序/H5项目模板
-使用uniapp+uview1+vue2
+使用uniapp+uview2+vue2
 
 ## 快速开始
 ```
