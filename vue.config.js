@@ -1,4 +1,5 @@
 module.exports = {
+	transpileDependencies: ['uview-ui'],
 	devServer:{
 		port:'8080',
 		open:true,
