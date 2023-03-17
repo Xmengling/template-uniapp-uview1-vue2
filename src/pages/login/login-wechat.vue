@@ -6,7 +6,7 @@
           ref="phone"
           icon="weixin-fill"
           type="primary"
-          :open-type="getPhoneNumber"
+          open-type="getPhoneNumber"
           @getphonenumber="getPhoneNumber"
         >
           微信用户快速登录
@@ -29,30 +29,18 @@ export default {
     }
   },
   onLoad() {
-    this.beforeLogin()
+    this.wxLogin()
   },
   methods: {
-    async beforeLogin() {
-      // 检查token是否过期
-      const token = uni.getStorageSync('token')
-      if (token) {
-        try {
-          await checkTokenApi()
-          // token有效，免登
-          pageCheck()
-        } catch (error) {
-          console.error('error', error)
+    wxLogin() {
+      this.popupShow = true
+      uni.login({
+        provider: 'weixin',
+        success: (res) => {
+          console.log('res', res)
+          this.params.code = res.code
         }
-      } else {
-        this.popupShow = true
-        uni.login({
-          provider: 'weixin',
-          success: (res) => {
-            console.log('res', res)
-            this.params.code = res.code
-          }
-        })
-      }
+      })
     },
     // 获取手机号码
     async getPhoneNumber(e) {
@@ -67,44 +55,17 @@ export default {
       }
       // 允许授权
       this.params.phoneCode = e.detail.code
-      // 获取临时token
-      await this.getPhoneApi()
-      // 获取组织列表
-      // const tenantList = await getGroupsListApi()
-      // 获取真实token
-      // await this.getRealTokenApi(tenantList)
-      // 页面跳转逻辑
       this.popupShow = false
+      // 调接口进行其他登录操作
+      // --------------------------
+      uni.setStorageSync('token', 'XXX')
+      // 页面跳转
+      this.pageToHelloWorld()
     },
-
-    // 获取真实token
-    // async getRealTokenApi(tenantList) {
-    //   // 获取groupId
-    //   const groupId = getGroupId(tenantList)
-    //   // 获取真实token
-    //   await getRealToken(groupId)
-    // },
-
-    // 微信获取临时token和手机号
-    async getPhoneApi() {
-      if (!this.params.code || !this.params.phoneCode) {
-        uni.showToast({
-          title: '微信版本过低，请更新版本',
-          icon: 'none'
-        })
-        throw new Error()
-      }
-      const res = await this.$request.getPhone({ ...this.params })
-      if (Number(res.data.retCode) === 0) {
-        uni.setStorageSync('token', res.data.data.token)
-        uni.setStorageSync('phone', res.data.data.phoneNumber)
-      } else {
-        uni.showToast({
-          title: res.data.message,
-          icon: 'none'
-        })
-        throw new Error()
-      }
+    pageToHelloWorld() {
+      uni.redirectTo({
+        url: '/pages/hello-world/hello-world'
+      })
     }
   }
 }

@@ -1,18 +1,10 @@
 <template>
 	<view class="index-wrap">
-		<u-rate/>
-		<image class="logo" src="/static/logo.png"></image>
-		<view>
-			<text class="title">{{title}}</text>
-		</view>
-		<view class="api-btn">
-			<u-button type="primary" @click="testApi">api请求</u-button>
-		</view>
+
 	</view>
 </template>
 
 <script>
-	import {apiTest} from '@/api/hello-world'
 	export default {
 		name: 'Index',
 		data() {
@@ -21,19 +13,27 @@
 			}
 		},
 		onLoad() {
-			this.checkLogin()
+			this.checkToken()
 		},
 		methods: {
-			async testApi() {
-				try {
-					await apiTest()
-				} catch (error) {
-					console.error(error)
+			async checkToken() {
+				// 检查token是否过期
+				const token = uni.getStorageSync('token')
+				if (token) {
+					try {
+						// await checkTokenApi()
+						// token有效，免登
+						this.pageToHelloWorld()
+					} catch (error) {
+						console.error('error', error)
+					}
+				} else {
+					this.pageToLogin()
 				}
 			},
 
 			// 跳过登录
-			checkLogin() {
+			pageToLogin() {
 				// 走登录逻辑
 				// #ifdef MP-WEIXIN
 				uni.reLaunch({
@@ -46,7 +46,13 @@
 					url: '/pages/login/login-h5'
 				})
 				// #endif
-    }
+    	},
+
+			pageToHelloWorld() {
+				uni.reLaunch({
+					url: '/pages/hello-world/hello-world'
+				})
+			}
 		}
 	}
 </script>
