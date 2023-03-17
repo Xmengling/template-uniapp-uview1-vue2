@@ -1,4 +1,4 @@
-# 一个开箱即用的H5项目模板
+# 一个开箱即用的小程序/H5项目模板
 使用uniapp+uview1+vue2
 
 ## 快速开始
@@ -20,16 +20,19 @@ npm run dev:h5
 ## 打包
 ```
 小程序
-npm run dev:mp-weixin
+npm run build:mp-weixin
 
 h5
-npm run dev:h5
+npm run build:h5
 ```
 
 ## 部署
 ```
 小程序
 npm run deploy:mp-weixin
+
+h5
+npm run deploy:h5
 ```
 
 ## 版本
