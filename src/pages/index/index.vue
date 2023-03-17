@@ -21,7 +21,7 @@
 			}
 		},
 		onLoad() {
-
+			this.checkLogin()
 		},
 		methods: {
 			async testApi() {
@@ -30,7 +30,23 @@
 				} catch (error) {
 					console.error(error)
 				}
-			}
+			},
+
+			// 跳过登录
+			checkLogin() {
+				// 走登录逻辑
+				// #ifdef MP-WEIXIN
+				uni.reLaunch({
+					url: '/pages/login/login-wechat'
+				})
+				// #endif
+
+				// #ifdef H5
+				uni.reLaunch({
+					url: '/pages/login/login-h5'
+				})
+				// #endif
+    }
 		}
 	}
 </script>

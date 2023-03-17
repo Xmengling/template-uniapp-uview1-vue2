@@ -8,6 +8,12 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
+		},
+		{
+			"path": "pages/login/login-wechat",
+			"style": {
+				"navigationBarTitleText": "小程序登录"
+			}
 		}
 	],
 	"globalStyle": {
